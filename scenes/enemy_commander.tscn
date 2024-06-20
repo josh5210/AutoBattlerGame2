@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmiswrqdgx8fj"]
+
+[ext_resource type="Script" path="res://scripts/enemy_commander.gd" id="1_fg7vf"]
+[ext_resource type="Texture2D" uid="uid://dmoit8t7fwryg" path="res://art/characters/fox.png" id="1_qvuf3"]
+[ext_resource type="Texture2D" uid="uid://dtlwjhm6ummjw" path="res://art/icons/emote_heart.png" id="1_scnf0"]
+[ext_resource type="Texture2D" uid="uid://bqwiaxuj4wtj0" path="res://art/icons/emote_star.png" id="3_o8f04"]
+[ext_resource type="PackedScene" uid="uid://cy3kr86rbjkba" path="res://scenes/enemy_gy.tscn" id="5_3tu0m"]
+
+[node name="EnemyCommander" type="Node2D"]
+script = ExtResource("1_fg7vf")
+
+[node name="CommanderColor" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(300, 300)
+offset_right = 300.0
+offset_bottom = 356.0
+color = Color(0.388386, 0.0940692, 0.114999, 1)
+
+[node name="Life" type="Label" parent="CommanderColor"]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 299.0
+offset_right = 106.0
+offset_bottom = 344.0
+theme_override_font_sizes/font_size = 32
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Heart" type="Sprite2D" parent="CommanderColor"]
+position = Vector2(36, 328)
+scale = Vector2(1.96875, 1.98026)
+texture = ExtResource("1_scnf0")
+
+[node name="Summon" type="Sprite2D" parent="CommanderColor"]
+position = Vector2(256, 330)
+scale = Vector2(2.79102, 2.8639)
+texture = ExtResource("3_o8f04")
+
+[node name="Control" type="Control" parent="CommanderColor"]
+clip_contents = true
+custom_minimum_size = Vector2(280, 280)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -169.0
+offset_right = 140.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CommanderPic" type="Sprite2D" parent="CommanderColor/Control"]
+position = Vector2(145, 273)
+scale = Vector2(0.487831, 0.487831)
+texture = ExtResource("1_qvuf3")
+
+[node name="EnemyGY" parent="." instance=ExtResource("5_3tu0m")]
+offset_left = 119.0
+offset_top = 298.0
+offset_right = 119.0
+offset_bottom = 298.0

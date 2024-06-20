@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://dyofy681jkfql"]
+
+[ext_resource type="Script" path="res://scripts/hand.gd" id="1_mchwh"]
+[ext_resource type="Script" path="res://scripts/positioner_testing.gd" id="1_rpgcb"]
+[ext_resource type="PackedScene" uid="uid://57y0briyq17" path="res://scenes/deck.tscn" id="2_34mbm"]
+[ext_resource type="Script" path="res://scripts/repositioner.gd" id="2_jygrj"]
+[ext_resource type="PackedScene" uid="uid://djapmlyd5ycii" path="res://scenes/card_ui.tscn" id="3_76mav"]
+[ext_resource type="PackedScene" uid="uid://c8s26o6w1wmas" path="res://scenes/card_target_selector.tscn" id="3_j8lb7"]
+[ext_resource type="Script" path="res://scripts/hand_repo.gd" id="3_llh44"]
+[ext_resource type="Resource" uid="uid://cl8os4hfwietx" path="res://custom_resources/cards/toad.tres" id="6_sqf3x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cqsuf"]
+size = Vector2(1198, 361)
+
+[node name="PositionerTesting" type="Node2D"]
+script = ExtResource("1_rpgcb")
+
+[node name="Repositioner" type="Node" parent="."]
+script = ExtResource("2_jygrj")
+
+[node name="HandRepo" type="Node" parent="."]
+script = ExtResource("3_llh44")
+
+[node name="RepoButton" type="Button" parent="."]
+offset_left = 1634.0
+offset_top = 400.0
+offset_right = 1875.0
+offset_bottom = 494.0
+text = "Reposition"
+
+[node name="UILayer" type="CanvasLayer" parent="." groups=["ui_layer"]]
+
+[node name="Deck" parent="UILayer" instance=ExtResource("2_34mbm")]
+unique_name_in_owner = true
+position = Vector2(1603, 619)
+
+[node name="Hand" type="Node2D" parent="UILayer"]
+unique_name_in_owner = true
+position = Vector2(1615, 647)
+script = ExtResource("1_mchwh")
+
+[node name="CardTargetSelector" parent="UILayer" instance=ExtResource("3_j8lb7")]
+
+[node name="CardDropArea" type="Area2D" parent="UILayer"]
+position = Vector2(360, 476)
+collision_layer = 2
+
+[node name="PlayerCardAreaCollision" type="CollisionShape2D" parent="UILayer/CardDropArea"]
+position = Vector2(601, 69.5)
+shape = SubResource("RectangleShape2D_cqsuf")
+
+[node name="CardUI" parent="UILayer" instance=ExtResource("3_76mav")]
+offset_left = -431.0
+offset_top = 156.0
+offset_right = -131.0
+offset_bottom = 606.0
+card = ExtResource("6_sqf3x")
+
+[node name="PField" type="Node2D" parent="UILayer" groups=["player_field_layer"]]
+position = Vector2(300, 39)

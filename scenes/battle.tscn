@@ -1,0 +1,160 @@
+[gd_scene load_steps=25 format=3 uid="uid://bbbbfghbn3hub"]
+
+[ext_resource type="Script" path="res://scripts/battle.gd" id="1_8aklp"]
+[ext_resource type="Texture2D" uid="uid://blqievpt83ypa" path="res://art/environment/forest_clearing_aerial_ponds.png" id="1_xxe8y"]
+[ext_resource type="Script" path="res://scripts/hand.gd" id="2_gqurl"]
+[ext_resource type="PackedScene" uid="uid://57y0briyq17" path="res://scenes/deck.tscn" id="2_oemjd"]
+[ext_resource type="Script" path="res://scripts/enemy_turn_handler.gd" id="3_d5qjr"]
+[ext_resource type="Script" path="res://scripts/battle_timer.gd" id="3_hfnua"]
+[ext_resource type="PackedScene" uid="uid://c8s26o6w1wmas" path="res://scenes/card_target_selector.tscn" id="3_qqn1v"]
+[ext_resource type="Script" path="res://scripts/battle_ui.gd" id="3_r3jfk"]
+[ext_resource type="Script" path="res://scripts/hand_repo.gd" id="4_0md4b"]
+[ext_resource type="Script" path="res://scripts/combat_handler_2.gd" id="4_bp8nw"]
+[ext_resource type="Script" path="res://scripts/e_repositioner.gd" id="4_ovphh"]
+[ext_resource type="Script" path="res://scripts/repositioner.gd" id="4_pfuev"]
+[ext_resource type="Script" path="res://scripts/player_field.gd" id="7_1t0pt"]
+[ext_resource type="Theme" uid="uid://dkm4qyjraap5k" path="res://themes/new_theme.tres" id="7_nnq8b"]
+[ext_resource type="PackedScene" uid="uid://byeyaojxq2o0i" path="res://scenes/enemy_deck.tscn" id="7_wsuoh"]
+[ext_resource type="PackedScene" uid="uid://dmiswrqdgx8fj" path="res://scenes/enemy_commander.tscn" id="8_2s8d3"]
+[ext_resource type="Script" path="res://scripts/enemy_hand.gd" id="10_qy02g"]
+[ext_resource type="Script" path="res://scripts/enemy_field.gd" id="11_21axr"]
+[ext_resource type="Script" path="res://scripts/battle_debug_label.gd" id="14_cralq"]
+[ext_resource type="PackedScene" uid="uid://dohtx0ymjufsp" path="res://scenes/player_commander.tscn" id="15_pl2k0"]
+[ext_resource type="Script" path="res://scripts/combat_log.gd" id="18_lwcox"]
+[ext_resource type="Script" path="res://scripts/debug/debug_collision_shape.gd" id="19_p2hi7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7afel"]
+size = Vector2(341, 254)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xtge4"]
+size = Vector2(1198, 518)
+
+[node name="Battle" type="Node2D" groups=["battle"]]
+y_sort_enabled = true
+script = ExtResource("1_8aklp")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(961, 419)
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("1_xxe8y")
+metadata/_edit_lock_ = true
+
+[node name="Repositioner" type="Node" parent="."]
+script = ExtResource("4_pfuev")
+
+[node name="ERepositioner" type="Node" parent="."]
+script = ExtResource("4_ovphh")
+
+[node name="HandRepo" type="Node" parent="."]
+script = ExtResource("4_0md4b")
+
+[node name="CombatHandler2" type="Node" parent="."]
+script = ExtResource("4_bp8nw")
+
+[node name="EnemyTurnHandler" type="Node" parent="."]
+script = ExtResource("3_d5qjr")
+
+[node name="BattleTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource("3_hfnua")
+
+[node name="CardTargetSelector" parent="." instance=ExtResource("3_qqn1v")]
+
+[node name="BattleUI" type="CanvasLayer" parent="." groups=["ui_layer"]]
+unique_name_in_owner = true
+script = ExtResource("3_r3jfk")
+
+[node name="PlayerCommander" parent="BattleUI" groups=["player_commander"] instance=ExtResource("15_pl2k0")]
+unique_name_in_owner = true
+position = Vector2(0, 729)
+
+[node name="EnemyCommander" parent="BattleUI" instance=ExtResource("8_2s8d3")]
+unique_name_in_owner = true
+position = Vector2(1621, -1)
+
+[node name="Deck" parent="BattleUI" instance=ExtResource("2_oemjd")]
+unique_name_in_owner = true
+position = Vector2(1710, 771)
+
+[node name="EnemyDeck" parent="BattleUI" instance=ExtResource("7_wsuoh")]
+unique_name_in_owner = true
+position = Vector2(50, 7)
+
+[node name="EnemyHand" type="HBoxContainer" parent="BattleUI"]
+unique_name_in_owner = true
+offset_left = 363.0
+offset_top = -216.0
+offset_right = 1565.0
+offset_bottom = 84.0
+alignment = 1
+script = ExtResource("10_qy02g")
+
+[node name="Hand" type="Node2D" parent="BattleUI"]
+unique_name_in_owner = true
+position = Vector2(1610, 628)
+script = ExtResource("2_gqurl")
+
+[node name="EnemyField" type="Node2D" parent="BattleUI" groups=["enemy_field_layer"]]
+unique_name_in_owner = true
+position = Vector2(360, 90)
+script = ExtResource("11_21axr")
+
+[node name="PlayerField" type="Node2D" parent="BattleUI" groups=["player_field_layer"]]
+unique_name_in_owner = true
+position = Vector2(360, 390)
+script = ExtResource("7_1t0pt")
+
+[node name="DebugCollisionArea" type="Area2D" parent="BattleUI" groups=["debug_collision_shape_layer"]]
+collision_layer = 512
+script = ExtResource("19_p2hi7")
+
+[node name="DebugCollisionShape" type="CollisionShape2D" parent="BattleUI/DebugCollisionArea" groups=["debug_collision_shape_layer"]]
+position = Vector2(681.5, 163)
+shape = SubResource("RectangleShape2D_7afel")
+debug_color = Color(0.887633, 0.246616, 0.554789, 0.42)
+
+[node name="CardDropArea" type="Area2D" parent="BattleUI"]
+position = Vector2(365, 436)
+collision_layer = 2
+
+[node name="PlayerCardAreaCollision" type="CollisionShape2D" parent="BattleUI/CardDropArea"]
+position = Vector2(601, -9)
+shape = SubResource("RectangleShape2D_xtge4")
+
+[node name="EndTurnButton" type="Button" parent="BattleUI"]
+unique_name_in_owner = true
+offset_left = 1584.0
+offset_top = 625.0
+offset_right = 1914.0
+offset_bottom = 733.0
+theme = ExtResource("7_nnq8b")
+disabled = true
+text = "End Turn"
+
+[node name="BattleDebugLabel" type="Label" parent="BattleUI"]
+unique_name_in_owner = true
+offset_left = 17.0
+offset_top = 317.0
+offset_right = 289.0
+offset_bottom = 597.0
+theme_override_font_sizes/font_size = 20
+text = "
+"
+autowrap_mode = 2
+text_overrun_behavior = 3
+script = ExtResource("14_cralq")
+
+[node name="CombatLog" type="Label" parent="BattleUI"]
+unique_name_in_owner = true
+offset_left = 270.0
+offset_top = 113.0
+offset_right = 681.0
+offset_bottom = 397.0
+theme_override_font_sizes/font_size = 20
+text = "Combat Log
+"
+autowrap_mode = 2
+text_overrun_behavior = 3
+script = ExtResource("18_lwcox")
+
+[connection signal="area_entered" from="BattleUI/DebugCollisionArea" to="BattleUI/DebugCollisionArea" method="_on_area_entered"]

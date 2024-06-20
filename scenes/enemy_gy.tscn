@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy3kr86rbjkba"]
+
+[ext_resource type="Script" path="res://scripts/enemy_gy.gd" id="1_nc3wy"]
+[ext_resource type="Texture2D" uid="uid://cnsa4cxpudtws" path="res://art/icons/emote_swirl.png" id="2_b1116"]
+
+[node name="EnemyGY" type="Control" groups=["enemy_gy"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1645.0
+offset_bottom = -623.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_nc3wy")
+
+[node name="GYIcon" type="Sprite2D" parent="."]
+position = Vector2(30, 30)
+scale = Vector2(4.4375, 4.3125)
+texture = ExtResource("2_b1116")
+
+[node name="GYVBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+offset_top = 70.0
+offset_right = 193.0
+offset_bottom = 440.0
+
+[node name="GYNumLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 45.0
+offset_top = -5.0
+offset_right = 101.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 32
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GYButton" type="Button" parent="."]
+layout_mode = 1
+offset_right = 99.0
+offset_bottom = 50.0
+toggle_mode = true
+
+[connection signal="toggled" from="GYButton" to="." method="_on_gy_button_toggled"]

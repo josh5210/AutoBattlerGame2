@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://57y0briyq17"]
+
+[ext_resource type="Script" path="res://scripts/deck.gd" id="1_nrbd8"]
+[ext_resource type="Resource" uid="uid://conyjcljknes8" path="res://custom_resources/default_deck_handler.tres" id="2_ot8pm"]
+[ext_resource type="Texture2D" uid="uid://dd1myteksgaod" path="res://art/environment/snow_city_mountain_CARDBACK.png" id="3_4w2eo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bfh60"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="Deck" type="Node2D" groups=["deck"]]
+script = ExtResource("1_nrbd8")
+deck_handler = ExtResource("2_ot8pm")
+
+[node name="DeckControl" type="Control" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 300.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="DeckSprite" type="TextureRect" parent="DeckControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_4w2eo")
+
+[node name="NumberLabel" type="Label" parent="DeckControl"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 44.0
+offset_bottom = 49.0
+text = "!"
+label_settings = SubResource("LabelSettings_bfh60")
+horizontal_alignment = 1
+vertical_alignment = 1

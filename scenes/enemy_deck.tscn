@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://byeyaojxq2o0i"]
+
+[ext_resource type="Script" path="res://scripts/enemy_deck.gd" id="1_aoen4"]
+[ext_resource type="Resource" uid="uid://c03bjitea5arf" path="res://custom_resources/default_enemy_deck_handler.tres" id="2_kwelf"]
+[ext_resource type="Texture2D" uid="uid://c10aaqssq7q8l" path="res://art/environment/city_tree_wall_CARDBACK.png" id="3_fo6ba"]
+
+[node name="EnemyDeck" type="Node2D"]
+script = ExtResource("1_aoen4")
+enemy_deck_handler = ExtResource("2_kwelf")
+
+[node name="EDeckControl" type="Control" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="EDeckSprite" type="TextureRect" parent="EDeckControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_fo6ba")
+flip_v = true
+
+[node name="NumberLabel" type="Label" parent="EDeckControl"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 259.0
+offset_right = 41.0
+offset_bottom = 296.0
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1

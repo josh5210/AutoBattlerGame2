@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://cl8os4hfwietx"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_3ntdd"]
+[ext_resource type="Texture2D" uid="uid://ch5m1a8b6gevf" path="res://art/characters/toad defender.png" id="1_juout"]
+[ext_resource type="Texture2D" uid="uid://cr1wewnph0727" path="res://art/characters/toad_defender_nobg.png" id="2_5t6me"]
+
+[resource]
+script = ExtResource("1_3ntdd")
+id = "toad"
+name = "Toad"
+type = 0
+target = 0
+max_strength = 3
+strength = 3
+max_health = 15
+health = 15
+can_attack = true
+in_hand_pic = ExtResource("1_juout")
+in_play_pic = ExtResource("2_5t6me")

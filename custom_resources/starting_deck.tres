@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CardPile" load_steps=4 format=3 uid="uid://dj1j8jfdle2hk"]
+
+[ext_resource type="Resource" uid="uid://dltd26y1ahq84" path="res://custom_resources/cards/frog.tres" id="1_cxfl5"]
+[ext_resource type="Script" path="res://scripts/card_pile.gd" id="1_i10rn"]
+[ext_resource type="Resource" uid="uid://cl8os4hfwietx" path="res://custom_resources/cards/toad.tres" id="2_fqkub"]
+
+[resource]
+script = ExtResource("1_i10rn")
+cards = Array[Resource("res://scripts/card.gd")]([ExtResource("1_cxfl5"), ExtResource("2_fqkub"), ExtResource("1_cxfl5"), ExtResource("2_fqkub"), ExtResource("1_cxfl5"), ExtResource("2_fqkub"), ExtResource("1_cxfl5"), ExtResource("2_fqkub"), ExtResource("1_cxfl5"), ExtResource("2_fqkub")])

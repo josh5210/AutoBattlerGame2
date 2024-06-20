@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://djapmlyd5ycii"]
+
+[ext_resource type="Script" path="res://scripts/card_ui.gd" id="1_fknun"]
+[ext_resource type="Texture2D" uid="uid://c411fxju0chls" path="res://art/frog fighter.png" id="1_ksod7"]
+[ext_resource type="Texture2D" uid="uid://dnppeabjw7loc" path="res://art/frog_fighter_nobg_scuffed_big.png" id="2_6lwbc"]
+[ext_resource type="Script" path="res://scripts/card_state_machine.gd" id="4_cpid3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nph18"]
+size = Vector2(300.5, 449)
+
+[node name="CardUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1920.0
+offset_bottom = -1080.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fknun")
+
+[node name="CardColor" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 450.0
+color = Color(0.42537, 0.190605, 0.138372, 1)
+
+[node name="InHandTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 290.0
+offset_bottom = 420.0
+texture = ExtResource("1_ksod7")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="InPlayTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 290.0
+offset_bottom = 420.0
+texture = ExtResource("2_6lwbc")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="DropPointDetector" type="Area2D" parent="."]
+collision_mask = 2
+monitorable = false
+
+[node name="CardCollision" type="CollisionShape2D" parent="DropPointDetector"]
+position = Vector2(149.75, 224.5)
+shape = SubResource("RectangleShape2D_nph18")
+debug_color = Color(0.203922, 0.521569, 0.411765, 0.160784)
+
+[node name="CardStateMachine" type="Node" parent="."]
+script = ExtResource("4_cpid3")

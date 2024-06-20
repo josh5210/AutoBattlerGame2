@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DeckHandler" load_steps=3 format=3 uid="uid://conyjcljknes8"]
+
+[ext_resource type="Script" path="res://scripts/deck_handler.gd" id="1_mcwlo"]
+[ext_resource type="Resource" uid="uid://dj1j8jfdle2hk" path="res://custom_resources/starting_deck.tres" id="2_8kuo7"]
+
+[resource]
+script = ExtResource("1_mcwlo")
+starting_deck = ExtResource("2_8kuo7")
+cards_per_turn = 1
+cards = Array[Resource("res://scripts/card.gd")]([])

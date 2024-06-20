@@ -1,0 +1,164 @@
+[gd_scene load_steps=14 format=3 uid="uid://cn74ydmqj1tii"]
+
+[ext_resource type="Theme" uid="uid://5x0l4il7nngr" path="res://themes/test_card_theme.tres" id="1_qc7ht"]
+[ext_resource type="Script" path="res://scripts/card_ui.gd" id="1_xpucw"]
+[ext_resource type="Texture2D" uid="uid://c411fxju0chls" path="res://art/characters/frog fighter.png" id="2_26sk1"]
+[ext_resource type="Texture2D" uid="uid://dnppeabjw7loc" path="res://art/characters/frog_fighter_nobg_scuffed_big.png" id="3_hnlgs"]
+[ext_resource type="Script" path="res://scripts/card_state_machine.gd" id="4_87ilf"]
+[ext_resource type="Script" path="res://scripts/card_states/card_base_state.gd" id="5_ate1s"]
+[ext_resource type="Script" path="res://scripts/card_states/card_clicked_state.gd" id="6_3dqu7"]
+[ext_resource type="Script" path="res://scripts/card_states/card_dragging_state.gd" id="7_kwghf"]
+[ext_resource type="Script" path="res://scripts/card_states/card_released_state.gd" id="8_a6sn6"]
+[ext_resource type="Script" path="res://scripts/card_states/card_in_play_state.gd" id="9_ssbld"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wabfs"]
+font_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_gebf0"]
+font_size = 48
+font_color = Color(1, 0.356863, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nph18"]
+size = Vector2(300.5, 449)
+
+[node name="CardUI" type="Control"]
+custom_minimum_size = Vector2(30, 45)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 450.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_qc7ht")
+script = ExtResource("1_xpucw")
+
+[node name="CardColor" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 450.0
+mouse_filter = 2
+theme = ExtResource("1_qc7ht")
+color = Color(0.42537, 0.190605, 0.138372, 1)
+
+[node name="InHandTexture" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 290.0
+offset_bottom = 420.0
+mouse_filter = 2
+texture = ExtResource("2_26sk1")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="InPlayTexture" type="TextureRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(30, 45)
+layout_mode = 0
+offset_top = 2.0
+offset_right = 30.0
+offset_bottom = 47.0
+mouse_filter = 2
+texture = ExtResource("3_hnlgs")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="InGYTexture" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(30, 45)
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 45.0
+mouse_filter = 2
+texture = ExtResource("3_hnlgs")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="InGYTexture"]
+layout_mode = 0
+offset_left = 32.0
+offset_right = 79.0
+offset_bottom = 41.0
+text = "Frog"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StateLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 101.0
+offset_right = 117.0
+offset_bottom = 155.0
+text = "STATE: "
+label_settings = SubResource("LabelSettings_wabfs")
+
+[node name="EnabledLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 22.0
+offset_top = 217.0
+offset_right = 102.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 18
+text = "disabled = <>"
+
+[node name="StrengthLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 12.0
+offset_top = 11.0
+offset_right = 75.0
+offset_bottom = 79.0
+theme = ExtResource("1_qc7ht")
+text = "str"
+horizontal_alignment = 1
+
+[node name="HealthLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 12.0
+offset_top = 249.0
+offset_right = 75.0
+offset_bottom = 317.0
+text = "hp"
+label_settings = SubResource("LabelSettings_gebf0")
+horizontal_alignment = 1
+
+[node name="DropPointDetector" type="Area2D" parent="."]
+visible = false
+collision_mask = 2
+monitorable = false
+
+[node name="CardCollision" type="CollisionShape2D" parent="DropPointDetector"]
+position = Vector2(149.75, 224.5)
+shape = SubResource("RectangleShape2D_nph18")
+debug_color = Color(0.203922, 0.521569, 0.411765, 0.160784)
+
+[node name="CardStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_87ilf")
+initial_state = NodePath("CardBaseState")
+
+[node name="CardBaseState" type="Node" parent="CardStateMachine"]
+script = ExtResource("5_ate1s")
+
+[node name="CardClickedState" type="Node" parent="CardStateMachine"]
+script = ExtResource("6_3dqu7")
+state = 1
+
+[node name="CardDraggingState" type="Node" parent="CardStateMachine"]
+script = ExtResource("7_kwghf")
+state = 2
+
+[node name="CardReleasedState" type="Node" parent="CardStateMachine"]
+script = ExtResource("8_a6sn6")
+state = 3
+
+[node name="CardInPlayState" type="Node" parent="CardStateMachine"]
+script = ExtResource("9_ssbld")
+state = 4
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

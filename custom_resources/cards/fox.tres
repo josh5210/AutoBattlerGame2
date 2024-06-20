@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://cj6e0dwlqw3c2"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_ovwnr"]
+[ext_resource type="Texture2D" uid="uid://ce2kbdgq1vlnt" path="res://art/characters/fox mage.png" id="1_pxw4t"]
+[ext_resource type="Texture2D" uid="uid://ct3svyog0r8cu" path="res://art/characters/fox_mage_NOBG.png" id="2_5h0se"]
+
+[resource]
+script = ExtResource("1_ovwnr")
+id = "fox"
+name = "Fox"
+type = 0
+target = 0
+max_strength = 4
+strength = 4
+max_health = 12
+health = 12
+can_attack = true
+status_effect_one = 0
+status_effect_two = 0
+status_effect_three = 0
+in_hand_pic = ExtResource("1_pxw4t")
+in_play_pic = ExtResource("2_5h0se")

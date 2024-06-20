@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Card" load_steps=4 format=3 uid="uid://dltd26y1ahq84"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_0724f"]
+[ext_resource type="Texture2D" uid="uid://c411fxju0chls" path="res://art/characters/frog fighter.png" id="1_lqp4w"]
+[ext_resource type="Texture2D" uid="uid://dnppeabjw7loc" path="res://art/characters/frog_fighter_nobg_scuffed_big.png" id="2_m0iwd"]
+
+[resource]
+script = ExtResource("1_0724f")
+id = "frog"
+name = "Frog"
+type = 0
+target = 0
+max_strength = 5
+strength = 5
+max_health = 10
+health = 10
+can_attack = true
+status_effect_one = 0
+status_effect_two = 0
+status_effect_three = 0
+in_hand_pic = ExtResource("1_lqp4w")
+in_play_pic = ExtResource("2_m0iwd")
