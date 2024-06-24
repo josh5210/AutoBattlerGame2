@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://bycxkypip176"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_5d6am"]
+[ext_resource type="Texture2D" uid="uid://d3utf661mmube" path="res://art/icons/icon.svg" id="1_hpv0h"]
+
+[resource]
+script = ExtResource("1_5d6am")
+id = "gravedigging"
+name = "Gravedigging"
+type = 1
+target = 0
+max_strength = 0
+strength = 0
+max_health = 0
+health = 0
+can_attack = false
+description = "Revive 5: Returns 5 random minions from your graveyard to your deck."
+status_effect_one = 0
+s_e_value_one = 0
+status_effect_two = 0
+s_e_value_two = 0
+status_effect_three = 0
+s_e_value_three = 0
+in_hand_pic = ExtResource("1_hpv0h")
+in_play_pic = ExtResource("1_hpv0h")
+command_pic = ExtResource("1_hpv0h")
+number_of_special_conditions = 1
+min_minions_in_own_gy = 1
+revive_x = 5

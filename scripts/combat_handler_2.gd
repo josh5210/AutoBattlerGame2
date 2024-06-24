@@ -99,8 +99,18 @@ func combat_started() -> void:
 		# wait for the signal that the animation finished
 		await animation_finished
 		
+		# call a func to apply poisons if either attacker or target is poisoner
+		# edit: poison is only applied when ATTACKING, not being targeted.
+		#if next_attacker.is_poisoner or next_target.is_poisoner:
+		if next_attacker.is_poisoner:
+			apply_poisons(next_attacker, next_target)
+		
 		# call the func to calculate the damage dealt in the fight
 		calculate_damage(next_attacker, next_target)
+		
+		# call the func to apply ignite dmg
+		if next_attacker.is_igniter:
+			apply_ignite(next_attacker, next_target)
 		
 		# 2 vars checking if the hp dropped below 0
 		var next_attacker_alive = (next_attacker.health > 0)
@@ -125,6 +135,10 @@ func combat_started() -> void:
 				send_to_graveyard(next_target)
 				await Events.reposition_complete
 	
+	# after the main combat loop is done, do the poison damage phase
+	poison_damage_phase()
+	
+	# maybe insert some kind of tween here?
 	
 	# after all that jazz, emit the signal that combat is over back to the battle node
 	Events.combat_phase_ended.emit()
@@ -194,19 +208,19 @@ func update_minion_arrays() -> void:
 	enemy_minions = enemy_field.get_children()
 	
 	# perform a safety check to remove any unexpected data from the arrays
-	for m in player_minions:
-		if not m is CardUI:
-			print("update_minion_arrays found an error: " + str(m) + " is in player_minions array.")
-			print("type: " + str(typeof(m)))
-			print("removing it from array.")
-			player_minions.erase(m)
-	
-	for m in enemy_minions:
-		if not m is EnemyCardUI:
-			print("update_minion_arrays found an error: " + str(m) + " is in enemy_minions array.")
-			print("type: " + str(typeof(m)))
-			print("removing it from array.")
-			enemy_minions.erase(m)
+	# edit 6/22/24: removing these, they might just hide bugs
+	#for m in player_minions:
+		#if not m is CardUI:
+			#print("update_minion_arrays found an error: " + str(m) + " is in player_minions array.")
+			#print("type: " + str(typeof(m)))
+			#print("removing it from array.")
+			#player_minions.erase(m)
+	#for m in enemy_minions:
+		#if not m is EnemyCardUI:
+			#print("update_minion_arrays found an error: " + str(m) + " is in enemy_minions array.")
+			#print("type: " + str(typeof(m)))
+			#print("removing it from array.")
+			#enemy_minions.erase(m)
 
 
 # func to pick next target of attack, based on who is attacking.
@@ -334,9 +348,10 @@ func move_to_target(attacker, target) -> void:
 	animation_finished.emit()
 
 
+# OLD version of func before BLOCK
 # func that calcs damage and applies it to health of cards
 # also takes away the attacker's attack for the turn
-func calculate_damage(attacker, target) -> void:
+func OLD_calculate_damage(attacker, target) -> void:
 	# apply damage to health. dmg = str
 	attacker.health -= target.strength
 	target.health -= attacker.strength
@@ -354,7 +369,87 @@ func calculate_damage(attacker, target) -> void:
 	
 	elif attacker is EnemyCardUI:
 		combat_log.update_text("Enemy " + attacker.card.name + "(-" + str(target.strength) + ") attacked your " + target.card.name + "(-" + str(attacker.strength) + ")\n")
+
+
+# Edit 6/22/24, block only reduces damage when defending (not attacking)
+# BIG CHANGE: only ATTACKER deals normal combat damage, let's see how this plays
+func calculate_damage(attacker, target) -> void:
+	# attacker will only take damage in special cases
+	var attacker_damage_taken := 0
+	var target_damage_taken : int
 	
+	# if defender is a blocker, it's damage taken is reduced by block amount
+	if target.is_blocker:
+		target_damage_taken = attacker.strength - target.status_effects["BLOCK"]
+	# if not a blocker, damage taken is = to tar str
+	else:
+		target_damage_taken = attacker.strength
+	# don't allow negative damage
+	if target_damage_taken < 0:
+		target_damage_taken = 0
+		
+	# apply the damage to health
+	attacker.health -= attacker_damage_taken
+	target.health -= target_damage_taken
+	# update the hp labels
+	attacker.update_health_label()
+	target.update_health_label()
+	# take away the attacker's attack
+	attacker.can_attack = false
+	
+	# write what happened to the combat log.
+	if attacker is CardUI:
+		combat_log.update_text("Your " + attacker.card.name + " hits enemy " + target.card.name + " for " + str(target_damage_taken) + " damage\n")
+	
+	elif attacker is EnemyCardUI:
+		combat_log.update_text("Enemy " + attacker.card.name + " hits your " + target.card.name + " for " + str(target_damage_taken) + " damage\n")
+
+
+
+# this was v2 of calc damage
+func VERSION2OLDcalculate_damage(attacker, target) -> void:
+	var attacker_damage_taken : int
+	var target_damage_taken : int
+	
+	
+	# if card is a blocker, it's damage taken is reduced by block amount
+	if attacker.is_blocker:
+		attacker_damage_taken = target.strength - attacker.status_effects["BLOCK"]
+	# if not a blocker, damage taken is = to tar str
+	else:
+		attacker_damage_taken = target.strength
+	# don't allow negative damage
+	if attacker_damage_taken < 0:
+		attacker_damage_taken = 0
+	
+	# if defender is a blocker, it's damage taken is reduced by block amount
+	if target.is_blocker:
+		target_damage_taken = attacker.strength - target.status_effects["BLOCK"]
+	# if not a blocker, damage taken is = to tar str
+	else:
+		target_damage_taken = attacker.strength
+	# don't allow negative damage
+	if target_damage_taken < 0:
+		target_damage_taken = 0
+	
+	# apply the damage to health
+	attacker.health -= attacker_damage_taken
+	target.health -= target_damage_taken
+	
+	# update the hp labels
+	attacker.update_health_label()
+	target.update_health_label()
+	
+	# take away the attacker's attack
+	attacker.can_attack = false
+	
+	# write what happened to the combat log.
+	if attacker is CardUI:
+		combat_log.update_text("Your " + attacker.card.name + "(-" + str(attacker_damage_taken) + ") attacked enemy " + target.card.name + "(-" + str(target_damage_taken) + ")\n")
+	
+	elif attacker is EnemyCardUI:
+		combat_log.update_text("Enemy " + attacker.card.name + "(-" + str(attacker_damage_taken) + ") attacked your " + target.card.name + "(-" + str(target_damage_taken) + ")\n")
+
 
 
 # this func takes a dead card (CardUI or EnemyCardUI) and sends it to the right GY
@@ -407,3 +502,92 @@ func move_back(attacker_survived) -> void:
 	
 	# emit the signal that animation is finished
 	animation_finished.emit()
+
+
+# func to apply poisons, using .is_poisoner and .poisoned_for_amount vars
+func apply_poisons(attacker_with_poison, target_being_poisoned) -> void:
+	# var for amount of poison that is about to be applied, makes this func look cleaner
+	var poison_amount : int = attacker_with_poison.status_effects["POISON"]
+	# apply the poison
+	target_being_poisoned.poisoned_for_amount += poison_amount
+	# call a func to update the icon. it will instantiate if an icon doesn't already exist.
+	target_being_poisoned.update_bad_effect_icon("POISON", poison_amount)
+
+
+# phase of combat where poison damage is applied
+func poison_damage_phase() -> void:
+	# loop over enemy minions
+	for minion in enemy_field.get_children():
+		# if they are poisoned
+		if minion.poisoned_for_amount >= 1:
+			# first, reduce the poison amount by 1 (so we don't have to make is alive checks)
+			minion.poisoned_for_amount -= 1
+			# decrement the icon
+			minion.update_bad_effect_icon("POISON", -1)
+			# call another func to deal effect damage = to the original amount
+			deal_effect_damage(minion, minion.poisoned_for_amount + 1, "POISON")
+	
+	# do the same for player minions
+	for minion in player_field.get_children():
+		if minion.poisoned_for_amount >= 1:
+			minion.poisoned_for_amount -= 1
+			minion.update_bad_effect_icon("POISON", -1)
+			deal_effect_damage(minion, minion.poisoned_for_amount + 1, "POISON")
+
+
+
+# this func will handle dealing effect (non normal attack damage)
+# seperate from calculate damage in case I add some kind of modifiers to new cards
+# damage type is passed in in case modifiers need to know
+# this func will also handle sending to GY if needed.
+# Note: maybe look into a way to damage multiple targets at once, i.e., this func take an array arg and dmgs all b4 sending anythign to gy
+func deal_effect_damage(minion, amount, _damage_type) -> void:
+	# safety check on object type
+	if not minion is CardUI and not minion is EnemyCardUI:
+		print("Error in deal_effect_damage: minion is wrong object type.")
+		return
+	
+	# future damage modifier checks can go in here
+	
+	# for now, just apply the damage passed in
+	minion.health -= amount
+	# call func to update hp label
+	minion.update_health_label()
+	# send to GY if needed
+	if minion.health <= 0:
+		send_to_graveyard(minion)
+
+
+# func to apply ignite
+func apply_ignite(attacker_with_ignite, target_being_ignited) -> void:
+	# var for amount of poison that is about to be applied, makes this func look cleaner
+	var ignite_amount : int = attacker_with_ignite.status_effects["IGNITE"]
+	
+	# ignite will deal dmg = to the amount to the minions adjacent to target
+	# we need to check for minions +/- 1 index away from target
+	var target_index : int = target_being_ignited.get_index()
+	var after_target = null
+	var before_target = null
+	
+	# if target is player's, check player field
+	# if target_being_ignited is CardUI:
+		# if the size of the array (-1) is greater than the target index,
+		# there must be an adjacent after target
+		# if target_index < player_field.get_children().size() - 1:
+			# after_target = player_field.get_child(target_index + 1)
+		# if the target index is not 0, it is not first in array
+		# so there must be a before target
+		# if target_index > 0:
+			# before_target = player_field.get_child(target_index - 1)
+	
+	# alternative code that should work regardless of enemy/player target
+	if target_index < target_being_ignited.get_parent().get_children().size() - 1:
+		after_target = target_being_ignited.get_parent().get_child(target_index + 1)
+	if target_index > 0:
+		before_target = target_being_ignited.get_parent().get_child(target_index - 1)
+	
+	# call the func to deal dmg if the targets exist
+	if after_target:
+		deal_effect_damage(after_target, ignite_amount, "IGNITE")
+	if before_target:
+		deal_effect_damage(before_target, ignite_amount, "IGNITE")

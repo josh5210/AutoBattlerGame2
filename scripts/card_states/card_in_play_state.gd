@@ -19,6 +19,9 @@ func enter():
 	card_ui.set_custom_minimum_size(Vector2(200, 300))
 	card_ui._set_size(Vector2(200, 300))
 	
+	# call the func to adjust label positions
+	card_ui.update_icon_and_label_positions()
+	
 	# reset pivot_offset
 	# card_ui.pivot_offset = Vector2.ZERO
 	

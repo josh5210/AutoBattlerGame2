@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://djapmlyd5ycii"]
+[gd_scene load_steps=25 format=3 uid="uid://djapmlyd5ycii"]
 
 [ext_resource type="Script" path="res://scripts/card_ui.gd" id="1_fknun"]
 [ext_resource type="Texture2D" uid="uid://c411fxju0chls" path="res://art/characters/frog fighter.png" id="2_efg7u"]
@@ -14,17 +14,27 @@
 [ext_resource type="Script" path="res://scripts/card_states/card_in_play_state.gd" id="9_1bi5o"]
 [ext_resource type="Script" path="res://scripts/card_states/card_dead_state.gd" id="10_h6bws"]
 [ext_resource type="Script" path="res://scenes/PivotOffsetDebugger.gd" id="11_dd86t"]
+[ext_resource type="Texture2D" uid="uid://nh64ty041s11" path="res://art/icons/sword.png" id="15_1kkin"]
+[ext_resource type="Texture2D" uid="uid://dvu36g2o3dvrn" path="res://art/icons/suit_hearts.png" id="16_5exjs"]
+[ext_resource type="Texture2D" uid="uid://578mbbm1leec" path="res://art/icons/flask_full.png" id="17_gjsbp"]
+[ext_resource type="Texture2D" uid="uid://udjb713ye5yi" path="res://art/icons/shield.png" id="18_5h43s"]
+[ext_resource type="Texture2D" uid="uid://nynxhquiwfoo" path="res://art/icons/fire.png" id="19_c6mof"]
+[ext_resource type="Texture2D" uid="uid://d3utf661mmube" path="res://art/icons/icon.svg" id="20_7n3a5"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_wabfs"]
 font_size = 24
 font_color = Color(1, 1, 0, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_gebf0"]
-font_size = 48
-font_color = Color(1, 0.356863, 1, 1)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nph18"]
 size = Vector2(300.5, 449)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gebf0"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_t36ad"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
 
 [node name="CardUI" type="Control"]
 custom_minimum_size = Vector2(300, 450)
@@ -35,6 +45,33 @@ offset_bottom = 450.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_fknun")
+
+[node name="CardStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_cpid3")
+initial_state = NodePath("CardBaseState")
+
+[node name="CardBaseState" type="Node" parent="CardStateMachine"]
+script = ExtResource("5_5mxf6")
+
+[node name="CardClickedState" type="Node" parent="CardStateMachine"]
+script = ExtResource("6_7nw1t")
+state = 1
+
+[node name="CardDraggingState" type="Node" parent="CardStateMachine"]
+script = ExtResource("7_y0ego")
+state = 2
+
+[node name="CardReleasedState" type="Node" parent="CardStateMachine"]
+script = ExtResource("8_qc4qy")
+state = 3
+
+[node name="CardInPlayState" type="Node" parent="CardStateMachine"]
+script = ExtResource("9_1bi5o")
+state = 4
+
+[node name="CardDeadState" type="Node" parent="CardStateMachine"]
+script = ExtResource("10_h6bws")
+state = 6
 
 [node name="CardColor" type="ColorRect" parent="."]
 layout_mode = 0
@@ -128,26 +165,6 @@ theme_override_font_sizes/font_size = 24
 text = "PARENT:"
 script = ExtResource("6_y7045")
 
-[node name="StrengthLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 11.0
-offset_right = 75.0
-offset_bottom = 79.0
-text = "str"
-label_settings = SubResource("LabelSettings_gebf0")
-horizontal_alignment = 1
-
-[node name="HealthLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 249.0
-offset_right = 75.0
-offset_bottom = 317.0
-text = "hp"
-label_settings = SubResource("LabelSettings_gebf0")
-horizontal_alignment = 1
-
 [node name="DropPointDetector" type="Area2D" parent="."]
 collision_mask = 514
 monitorable = false
@@ -156,33 +173,6 @@ monitorable = false
 position = Vector2(149.75, 224.5)
 shape = SubResource("RectangleShape2D_nph18")
 debug_color = Color(0.203922, 0.521569, 0.411765, 0.160784)
-
-[node name="CardStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("4_cpid3")
-initial_state = NodePath("CardBaseState")
-
-[node name="CardBaseState" type="Node" parent="CardStateMachine"]
-script = ExtResource("5_5mxf6")
-
-[node name="CardClickedState" type="Node" parent="CardStateMachine"]
-script = ExtResource("6_7nw1t")
-state = 1
-
-[node name="CardDraggingState" type="Node" parent="CardStateMachine"]
-script = ExtResource("7_y0ego")
-state = 2
-
-[node name="CardReleasedState" type="Node" parent="CardStateMachine"]
-script = ExtResource("8_qc4qy")
-state = 3
-
-[node name="CardInPlayState" type="Node" parent="CardStateMachine"]
-script = ExtResource("9_1bi5o")
-state = 4
-
-[node name="CardDeadState" type="Node" parent="CardStateMachine"]
-script = ExtResource("10_h6bws")
-state = 6
 
 [node name="PivotOffsetDebugger" type="ColorRect" parent="."]
 visible = false
@@ -199,6 +189,158 @@ offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("11_dd86t")
+
+[node name="StrengthIcon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = -88.0
+offset_right = 71.0
+offset_bottom = -28.0
+grow_vertical = 0
+texture = ExtResource("15_1kkin")
+expand_mode = 1
+
+[node name="HealthIcon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 236.0
+offset_top = -81.0
+offset_right = 296.0
+offset_bottom = -21.0
+grow_vertical = 0
+texture = ExtResource("16_5exjs")
+expand_mode = 1
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 237.0
+offset_top = 360.0
+offset_right = 300.0
+offset_bottom = 428.0
+text = "hp"
+label_settings = SubResource("LabelSettings_gebf0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StrengthLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 355.0
+offset_right = 76.0
+offset_bottom = 423.0
+text = "str"
+label_settings = SubResource("LabelSettings_gebf0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SEIcon1" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 9.0
+offset_right = 71.0
+offset_bottom = 69.0
+texture = ExtResource("17_gjsbp")
+expand_mode = 1
+
+[node name="SELabel1" type="Label" parent="SEIcon1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+label_settings = SubResource("LabelSettings_t36ad")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SEIcon2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 71.0
+offset_right = 69.0
+offset_bottom = 131.0
+texture = ExtResource("18_5h43s")
+expand_mode = 1
+
+[node name="SELabel2" type="Label" parent="SEIcon2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+label_settings = SubResource("LabelSettings_t36ad")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SEIcon3" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 134.0
+offset_right = 69.0
+offset_bottom = 194.0
+texture = ExtResource("19_c6mof")
+expand_mode = 1
+
+[node name="SELabel3" type="Label" parent="SEIcon3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+label_settings = SubResource("LabelSettings_t36ad")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="BadEffectVBox" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(70, 240)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 190.0
+grow_horizontal = 0
+
+[node name="DescriptionBG" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 228.0
+offset_right = 290.0
+offset_bottom = 420.0
+mouse_filter = 2
+color = Color(0, 0.130404, 0, 1)
+
+[node name="DescriptionText" type="RichTextLabel" parent="DescriptionBG"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 5.0
+offset_right = 273.0
+offset_bottom = 187.0
+mouse_filter = 2
+text = "Description Description Description Description Description Description Description Description Description Description "
+
+[node name="CommandTexture" type="TextureRect" parent="DescriptionBG"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = -218.0
+offset_right = 280.0
+mouse_filter = 2
+texture = ExtResource("20_7n3a5")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

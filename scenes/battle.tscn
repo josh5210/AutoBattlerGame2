@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bbbbfghbn3hub"]
+[gd_scene load_steps=26 format=3 uid="uid://bbbbfghbn3hub"]
 
 [ext_resource type="Script" path="res://scripts/battle.gd" id="1_8aklp"]
 [ext_resource type="Texture2D" uid="uid://blqievpt83ypa" path="res://art/environment/forest_clearing_aerial_ponds.png" id="1_xxe8y"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/e_repositioner.gd" id="4_ovphh"]
 [ext_resource type="Script" path="res://scripts/repositioner.gd" id="4_pfuev"]
 [ext_resource type="Script" path="res://scripts/player_field.gd" id="7_1t0pt"]
+[ext_resource type="Script" path="res://scripts/command_handler.gd" id="7_8h6mh"]
 [ext_resource type="Theme" uid="uid://dkm4qyjraap5k" path="res://themes/new_theme.tres" id="7_nnq8b"]
 [ext_resource type="PackedScene" uid="uid://byeyaojxq2o0i" path="res://scenes/enemy_deck.tscn" id="7_wsuoh"]
 [ext_resource type="PackedScene" uid="uid://dmiswrqdgx8fj" path="res://scenes/enemy_commander.tscn" id="8_2s8d3"]
@@ -50,6 +51,9 @@ script = ExtResource("4_0md4b")
 
 [node name="CombatHandler2" type="Node" parent="."]
 script = ExtResource("4_bp8nw")
+
+[node name="CommandHandler" type="Node" parent="." groups=["command_handler"]]
+script = ExtResource("7_8h6mh")
 
 [node name="EnemyTurnHandler" type="Node" parent="."]
 script = ExtResource("3_d5qjr")

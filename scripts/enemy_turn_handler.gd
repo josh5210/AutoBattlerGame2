@@ -49,6 +49,9 @@ func e_play_card() -> void:
 		print("Reparenting card to enemy field")
 		card_picked.reparent(enemy_field_layer, true)
 		
+		# call the func that resizes labels
+		card_picked.update_icon_and_label_positions()
+		
 		# emit a signal that the enemy has played a card.
 		# This signal will be used by EnemyField, and maybe elsewhere
 		Events.enemy_card_played.emit()

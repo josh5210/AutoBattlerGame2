@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Autobattler Prototype TAKE 2"
+config/name="Autobattler Prototype v3"
 run/main_scene="res://scenes/battle.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://art/icons/icon.svg"

@@ -2,10 +2,17 @@ extends CardState
 
 # ref the player commander using the group it is in
 @onready var player_commander = get_tree().get_first_node_in_group("player_commander")
+# ref the command handler for command cards
+@onready var command_handler = get_tree().get_first_node_in_group("command_handler")
 
 
 # when entering released state, check some logic to see where card should go
 func enter() -> void:
+	
+	# command cards will have different func for entering released
+	if card_ui.is_command:
+		command_enter_released()
+		return
 	
 	# if card that was already played released, send back to inplay
 	if card_ui.card_played:
@@ -96,3 +103,39 @@ func tween_to_original_size() -> void:
 	var tween = Tween
 	tween = create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	tween.tween_property(card_ui, "scale", final_size, 0.5)
+
+
+# func executed when a command card enters released state.
+func command_enter_released() -> void:
+	
+	# if it is a card that targets field
+	if card_ui.card.targets_player_field():
+		# check if the cardui has a target (it's hovering over field)
+		# if it doesn't, it goes back to BASE in hand
+		if card_ui.targets.is_empty():
+			transition_requested.emit(self, CardState.State.BASE)
+			# signal to hand repo to repo this card back in hand
+			Events.new_card_in_hand.emit(card_ui)
+			Events.hand_needs_repositioning.emit()
+			return
+		# otherwise, the card is trying to be played
+		# call the CommandHandler func, which returns TRUE if the card
+		# ends up being played, false if not
+		else:
+			var card_was_played = command_handler.command_targeting_field_released(card_ui)
+			# now, if it wasn't played, go back to BASE
+			if !card_was_played:
+				transition_requested.emit(self, CardState.State.BASE)
+				# signal to hand repo to repo this card back in hand
+				Events.new_card_in_hand.emit(card_ui)
+				Events.hand_needs_repositioning.emit()
+				return
+			# if it was played, I think we can queue_free() it from here
+			if card_was_played:
+				card_ui.queue_free()
+	
+	
+	# debug.
+	print("command_enter_released: a non-field target command released.")
+
+

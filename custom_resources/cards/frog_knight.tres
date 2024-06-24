@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Card" load_steps=3 format=3 uid="uid://b2aed43mslm3o"]
+
+[ext_resource type="Texture2D" uid="uid://dp838qxjl6mpd" path="res://art/characters/frog knight.png" id="1_bi7nj"]
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_lhobh"]
+
+[resource]
+script = ExtResource("1_lhobh")
+id = "frog_knight"
+name = "Frog Knight"
+type = 0
+target = 0
+max_strength = 4
+strength = 4
+max_health = 11
+health = 11
+can_attack = true
+description = ""
+status_effect_one = 1
+s_e_value_one = 2
+status_effect_two = 2
+s_e_value_two = 1
+status_effect_three = 0
+s_e_value_three = 0
+in_hand_pic = ExtResource("1_bi7nj")
+in_play_pic = ExtResource("1_bi7nj")
+number_of_special_conditions = 0
+min_minions_in_own_gy = 0
+revive_x = 0

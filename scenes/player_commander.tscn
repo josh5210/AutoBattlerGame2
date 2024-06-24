@@ -59,7 +59,7 @@ position = Vector2(135, 211)
 scale = Vector2(0.467548, 0.467548)
 texture = ExtResource("1_sll5k")
 
-[node name="PlayerGY" parent="." instance=ExtResource("4_6pe63")]
+[node name="PlayerGY" parent="." groups=["player_gy"] instance=ExtResource("4_6pe63")]
 unique_name_in_owner = true
 offset_left = 21.0
 offset_top = -383.0

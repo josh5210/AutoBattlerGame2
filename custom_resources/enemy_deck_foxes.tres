@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="CardPile" load_steps=3 format=3 uid="uid://dw4o88nqtpq2j"]
+[gd_resource type="Resource" script_class="CardPile" load_steps=5 format=3 uid="uid://dw4o88nqtpq2j"]
 
 [ext_resource type="Script" path="res://scripts/card_pile.gd" id="1_8cg57"]
-[ext_resource type="Resource" uid="uid://cj6e0dwlqw3c2" path="res://custom_resources/cards/fox.tres" id="1_qwk8k"]
+[ext_resource type="Resource" uid="uid://cj6e0dwlqw3c2" path="res://custom_resources/cards/fox.tres" id="1_x6xmd"]
+[ext_resource type="Resource" uid="uid://dltd26y1ahq84" path="res://custom_resources/cards/frog.tres" id="2_a0qck"]
+[ext_resource type="Resource" uid="uid://cl8os4hfwietx" path="res://custom_resources/cards/toad.tres" id="3_orngp"]
 
 [resource]
 script = ExtResource("1_8cg57")
-cards = Array[Resource("res://scripts/card.gd")]([ExtResource("1_qwk8k"), ExtResource("1_qwk8k"), ExtResource("1_qwk8k"), ExtResource("1_qwk8k"), ExtResource("1_qwk8k"), ExtResource("1_qwk8k"), ExtResource("1_qwk8k")])
+cards = Array[Resource("res://scripts/card.gd")]([ExtResource("1_x6xmd"), ExtResource("1_x6xmd"), ExtResource("1_x6xmd"), ExtResource("1_x6xmd"), ExtResource("1_x6xmd"), ExtResource("2_a0qck"), ExtResource("3_orngp")])

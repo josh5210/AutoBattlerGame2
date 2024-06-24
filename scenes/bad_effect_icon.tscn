@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://belmwyselii6n"]
+
+[ext_resource type="Shader" path="res://custom_resources/red_color_shader.gdshader" id="1_ghxii"]
+[ext_resource type="Texture2D" uid="uid://578mbbm1leec" path="res://art/icons/flask_full.png" id="2_2a4qy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tuqi8"]
+shader = ExtResource("1_ghxii")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ycaw7"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[node name="BadEffectIcon" type="TextureRect"]
+material = SubResource("ShaderMaterial_tuqi8")
+custom_minimum_size = Vector2(60, 60)
+texture = ExtResource("2_2a4qy")
+expand_mode = 1
+
+[node name="BadEffectLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "99"
+label_settings = SubResource("LabelSettings_ycaw7")
+horizontal_alignment = 1
+vertical_alignment = 2
